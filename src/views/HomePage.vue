@@ -1,0 +1,376 @@
+<template>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12 mt-5">
+        <h4 class="fw-bolder">Test Audio and Video  k Quality</h4>
+        <p>
+          Before your session is set up, please confirm that your camera and microphone are switched on.
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-7 col-md-6 my-2">
+        <div class="video-container my-2">
+          <!-- <div class="notification">
+            <div class="my-2">
+              <span class="d-flex justify-content-center align-items-center">
+                <Icon icon="carbon:video-off-filled" class="mx-1" /> Camera Off
+              </span>
+            </div>
+            <div class="my-2">
+              <span class="d-flex justify-content-center align-items-center">
+                <Icon icon="fa:microphone-slash" class="mx-1" /> Microphone Off
+              </span>
+            </div>
+          </div> -->
+
+          <video class="shadow video" id="video" playsinline autoplay></video>
+
+          <div class="icon__container d-flex justify-content-between align-items-end">
+            <canvas class="shadow-sm hidden__two" id="canvas_two" width="36" height="36"></canvas>
+
+            <div class="d-flex justify-content-start align-items-center">
+              <button v-if="!camera" class="icon__off" @click="camera__on">
+                <Icon icon="carbon:video-off-filled" />
+              </button>
+              <button v-if="camera" class="icon__on" @click="camera__off">
+                <Icon icon="carbon:video-filled" />
+              </button>
+
+              <button v-if="!microphone" class="icon__off" @click="microphone__on">
+                <Icon icon="fa:microphone-slash" />
+              </button>
+              <button v-if="microphone" class="icon__on" @click="microphone__off">
+                <Icon icon="fa-solid:microphone" />
+              </button>
+            </div>
+            <canvas class="shadow-sm hidden__two" id="canvas" width="36" height="36"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-md-6 text-center my-2">
+        <div v-if="$route.params.role !== 'notary'">
+          <div class="my-3">
+            <div class="display-container">
+              <p class="h5 mb-4">Connecting to the next available notary</p>
+              <!-- <p class="my-0 px-0 waiting">waiting</p>
+              <img src="../assets/images/spinner.svg" width="40" height="40" alt="spinner" class="d-inline" /> -->
+              <div class="mt-3">
+                <!-- <a href="/video" class="btn btn-primary">Proceed</a> -->
+                <button class="btn btn-primary" disabled>
+                  Proceed
+                </button>
+              </div>
+              <router-link to="/video">Proceed</router-link>
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="my-3">
+            <div class="display-container">
+              <p class="h5 mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, dicta
+              </p>
+              <a href="/video" class="btn btn-primary">Proceed</a>
+              <!-- <button class="btn btn-primary">
+                Proceed
+              </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { Icon } from "@iconify/vue";
+import { useToast } from "vue-toastification";
+  export default {
+    data() {
+      return {
+        camera: false,
+        microphone: false,
+      }
+    },
+  components: {
+    Icon,
+  },
+  methods: {
+    
+    async camera__on(event) {
+      this.camera = true
+      const video__player = document.querySelector("video#video");
+      let videoStream;
+      const video_constraints = {
+        audio: false,
+        video: {
+          aspectRatio: 1.777777778,
+          frameRate: { max: 30 },
+          facingMode: { exact: "user" },
+        },
+      };
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(video_constraints);
+        videoStream = stream;
+        video__player.srcObject = videoStream;
+        this.show_cam_on();
+      } catch (e) {
+        console.error("navigator.getUserMedia error:", e);
+      }
+      // `event` is the native DOM event
+      if (event) {
+        // alert(event.target.tagName)
+      }
+    },
+    async camera__off(event) {
+      this.camera = false;
+      const video__player = document.querySelector("video#video");
+      let videoStream;
+      const video_constraints = {
+        audio: false,
+        video: {
+          aspectRatio: 1.777777778,
+          frameRate: { max: 30 },
+          facingMode: { exact: "user" },
+        },
+      };
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia(video_constraints);
+        videoStream = stream;
+
+        const tracks = videoStream.getTracks();
+        tracks.forEach(function (track) {
+          track.stop();
+          track.enabled = false;
+        });
+        video__player.srcObject = null;
+        this.show_cam_off();
+      } catch (e) {
+        console.error("navigator.getUserMedia error:", e);
+      }
+      // `event` is the native DOM event
+      if (event) {
+        // alert(event.target.tagName)
+      }
+    },
+    async microphone__on(event) {
+      // const audio_constraints = {
+      //   audio: true,
+      //   video: false,
+      // };
+      // const video__player = document.querySelector("video#video");
+      // let videoStream;
+      this.microphone = true
+      try {
+        // const stream = await navigator.mediaDevices.getUserMedia(audio_constraints);
+        // videoStream = stream;
+        // video__player.srcObject = videoStream;
+        
+      } catch (e) {
+        console.error("navigator.getUserMedia error:", e);
+      }
+      this.show_mic_on();
+      // `event` is the native DOM event
+      if (event) {
+        // alert(event.target.tagName)
+      }
+    },
+    async microphone__off(event) {
+      // const audio_constraints = {
+      //   audio: true,
+      //   video: false,
+      // };
+      this.microphone = false;
+      // const video__player = document.querySelector("video#video");
+      // let videoStream;
+      try {
+        // const stream = await navigator.mediaDevices.getUserMedia(audio_constraints);
+        // videoStream = stream;
+        // video__player.srcObject = videoStream;
+        
+      } catch (e) {
+        console.error("navigator.getUserMedia error:", e);
+      }
+      this.show_mic_off();
+      // `event` is the native DOM event
+      if (event) {
+        // alert(event.target.tagName)
+      }
+    },
+    show_cam_off() {
+      this.toast.error(
+         `Camera is Off`
+      );
+    },
+    show_cam_on() {
+      this.toast.success(
+        `Camera is On`
+      );
+    },
+    show_mic_off() {
+      this.toast.error(
+        `Microphone is Off`
+      );
+    },
+    show_mic_on() {
+      this.toast.success(
+        `Microphone is On`
+      );
+    },
+  },
+  setup() {
+    const toast = useToast();
+    return { toast }
+  },
+  // mounted() {
+  //   this.show_cam_off();
+  //   this.show_mic_off();
+  // }
+}
+
+</script>
+
+
+<style scoped>
+/* h4{
+  color: var(--bs-gray-900);
+} */
+.video-container {
+  height: 380px;
+  position: relative;
+}
+.icon__container{
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+}
+.display-container {
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.video {
+  width: 100%;
+  /* max-width: 1920px; */
+  height: 100%;
+  /* max-height: 1080px; */
+  background-color: #000000;
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.hidden__two {
+  visibility: hidden;
+}
+
+.waiting {
+  animation: blink 1s linear infinite;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+#canvas {
+  background-color: #dde7fc;
+  border-radius: 50%;
+}
+
+#canvas_two {
+  background-color: #dde7fc;
+  border-radius: 50%;
+}
+
+#background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(transparent, #00035f, transparent);
+  background-size: 100% 7px;
+  animation: bg 1s infinite linear;
+  z-index: 2;
+  opacity: 0.3;
+}
+
+@keyframes bg {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 8px 8px;
+  }
+}
+
+.btn-primary {
+  background-color: #003bb3 !important;
+  /* color: #FFF !important; */
+  border-color: #003bb3 !important;
+}
+.btn {
+  /* box-shadow: none; */
+  font-weight: 400;
+  font-size: 1rem;
+}
+.hidden__two {
+  visibility: hidden;
+}
+.icon__off{
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  border: 1.5px solid var(--bs-danger);
+  background:transparent;
+  padding: 3px;
+  margin: 5px;
+  font-size: 1rem;
+  color: var(--bs-danger);
+}
+.icon__on{
+  border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    border: 1.5px solid var(--bs-gray-600);
+    background: transparent;
+    padding: 3px;
+    font-size: 1rem;
+    margin: 5px;
+    color: var(--bs-gray-600);
+}
+.notification{
+  position: absolute;
+  top: 5px;
+  right: 25%;
+  left: 25%;
+}
+.notification span{
+  background: var(--bs-gray-900);
+  border-radius: 1rem;
+  color: var(--bs-gray-600);
+  padding: 0.5rem;
+}
+button:disabled,
+button[disabled]{
+  background: #f2f2f2 !important;
+  color: #7b7b7b !important;
+  border-color:#f2f2f2 !important;
+  border: none;
+  cursor: not-allowed !important;
+  box-shadow: none;
+}
+</style>
