@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="col-lg-3 my-2">
-        <div class="videocall__box">
+        <div class="videocall__box p-2">
           <div class="notary__name d-flex justify-content-between align-items-baseline">
             <p>Abiodun Samuel</p>
             <span>Notary</span>

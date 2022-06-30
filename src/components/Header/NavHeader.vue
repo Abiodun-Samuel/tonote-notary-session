@@ -28,7 +28,7 @@
 
    <nav class="navbar navbar-expand-lg bg-white fixed-top">
       <div class="container">
-         <div class="menu d-flex justify-content-between w-100">
+         <div class="menu d-flex justify-content-between w-100 align-items-center">
 
             <a class="navbar-brand d-none d-lg-block" href="/">
                <Icon icon="bx:home" height="25" width="25" />

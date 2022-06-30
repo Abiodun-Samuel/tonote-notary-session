@@ -4,6 +4,8 @@ import router from "./router";
 import "bootstrap/dist/js/bootstrap.js";
 import "vue-universal-modal/dist/index.css";
 import VueUniversalModal from "vue-universal-modal";
+import { Tabs, Tab } from "vue3-tabs-component";
+
 // import "bootstrap-icons/font/bootstrap-icons.css";
 // import "bootstrap/dist/css/bootstrap.css";
 
@@ -28,8 +30,12 @@ import VueUniversalModal from "vue-universal-modal";
 //   newestOnTop: true,
 // };
 
-const app = createApp(App).use(router).use(VueUniversalModal, {
-  teleportTarget: "#modals",
-  modalComponent: "Modal",
-});
+const app = createApp(App)
+  .use(router)
+  .use(VueUniversalModal, {
+    teleportTarget: "#modals",
+    modalComponent: "Modal",
+  })
+  .component("tabs", Tabs)
+  .component("tab", Tab);
 app.mount("#app");

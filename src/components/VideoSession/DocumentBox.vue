@@ -1,6 +1,12 @@
 <template>
    <div class="document__box">
       <h4 class="text-center">Document</h4>
+      <div class="image__placeholder" @click="showModal">
+
+         <!-- <div v-for="key in count" :key="key">
+            <input type="text" v-model="values['dynamic-field-'+key]" size="50" placeholder="Another Field" :id="key">
+         </div> -->
+      </div>
       <p>
          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi consectetur soluta pariatur facere minima aliquam perferendis dolores velit
          adipisci!
@@ -113,19 +119,101 @@
       </p>
    </div>
 
+
+
+   <Modal v-model="isShow" :close="closeModal">
+      <div class="modal">
+         <div class="modal__content">
+            <div class="modal__header">
+               <button class="btn btn-sm bg-white text-danger px-0 py-0 close-btn shadow-lg" @click="closeModal">
+                  <span class="iconify" @click="closeModal" data-icon="eva:close-fill"></span>
+               </button>
+            </div>
+            <div class="modal__body">
+               <h4 class="my-3">Do you want to upload your image or take a snap shot?</h4>
+               <div>
+                  <tabs :options="{ useUrlFragment: false }" @clicked="tabClicked" @changed="tabChanged" nav-item-class="nav-item">
+                     <tab name="Upload">
+                        This is the content of the first tab
+                     </tab>
+                     <tab name="Snap Shot">
+                        This is the content of the second tab
+                     </tab>
+                  </tabs>
+               </div>
+            </div>
+            <div class="modal__footer my-3">
+               <button @click="closeModal">close</button>
+            </div>
+         </div>
+      </div>
+   </Modal>
 </template>
 
-<script>
-export default {
-   name: 'DocumentBox'
-}
+<script setup>
+import { ref } from 'vue';
+   
+      const isShow = ref(false);
+
+      const showModal = () => {
+         isShow.value = true;
+      }
+      const closeModal = () => {
+         isShow.value = false;
+      }
+
 </script>
 
-<style scoped>
+<style>
+
+
+.tabs-component ul{
+   display: flex !important;
+   list-style: none;
+   font-size: 1rem;
+   border-bottom: 1px solid gray;
+
+   /* color:; */
+}
+.tabs-component ul li{
+   padding-right: 1rem;
+}
+.modal {
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin: auto;
+   max-width: 500px;
+   height: auto;
+   padding: 2rem;
+   box-sizing: border-box;
+   background-color: #fff;
+   font-size: 20px;
+   text-align: center;
+   border-radius: 5px;
+   box-shadow: var(--bs-box-shadow);
+   z-index: 100000;
+}
+.close-btn{
+   position: absolute;
+   top: 2px;
+   right: 2px;
+}
 .document__box{
+   position: relative;
    background-color: #ffffff;
    border-radius: 4px;
    box-shadow: var(--bs-box-shadow);
    padding: 2rem;
+}
+.image__placeholder{
+   position: absolute;
+   top:0;
+   right: 0;
+   width: 100px;
+   height: 100px;
+   border: 1.4px solid lightblue;
+   border-radius: 4px;
 }
 </style>
