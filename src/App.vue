@@ -73,5 +73,10 @@ export default {
 body{
   background-color: var(----bs-body-bg);
   font-family: var(--bs-font-poppins);
+  z-index: 1;
+}
+.iconify{
+  height: 20px;
+  width: 20px;
 }
 </style>

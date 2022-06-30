@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-12 mt-5">
-        <h4 class="fw-bolder">Test Audio and Video  k Quality</h4>
+        <h4 class="fw-bolder">Test Audio and Video Quality</h4>
         <p>
           Before your session is set up, please confirm that your camera and microphone are switched on.
         </p>

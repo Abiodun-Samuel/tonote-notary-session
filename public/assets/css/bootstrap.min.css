@@ -7118,7 +7118,7 @@ fieldset:disabled .btn {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1055;
+    z-index: 10550000000000000;
     display: none;
     width: 100%;
     height: 100%;
@@ -7154,7 +7154,7 @@ fieldset:disabled .btn {
 .modal.show .modal-dialog {
     -webkit-transform: none;
     -ms-transform: none;
-    transform: none
+    transform: none;
 }
 
 .modal.modal-static .modal-dialog {
@@ -7204,13 +7204,13 @@ fieldset:disabled .btn {
 }
 
 .modal-backdrop {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: 1;
     left: 0;
-    z-index: 1050;
+    z-index: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #22292F
+    background-color: #22292F !important;
 }
 
 .modal-backdrop.show {
