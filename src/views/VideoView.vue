@@ -9,29 +9,32 @@
         </div>
       </div>
       <div class="col-lg-7 my-2">
-        <div class="document__box">
-          <DocumentBox />
-        </div>
+        <!-- <div class="document__box"> -->
+        <DocumentBox />
+        <!-- </div> -->
       </div>
       <div class="col-lg-3 my-2">
         <div class="videocall__box p-2">
-          <div class="notary__name d-flex justify-content-between align-items-baseline">
+          <!-- <div
+            class="notary__name d-flex justify-content-between align-items-baseline"
+          >
             <p>Abiodun Samuel</p>
             <span>Notary</span>
           </div>
           <div class="notary__video">
             <div id="stream-wrapper">
-              <div id="stream-controls" class="my-2 d-inline-flex">
-              </div>
+              <div id="stream-controls" class="my-2 d-inline-flex"></div>
             </div>
             <div id="video-streams"></div>
 
-            <div class="signer__name d-flex justify-content-between align-items-baseline">
+            <div
+              class="signer__name d-flex justify-content-between align-items-baseline"
+            >
               <p>John Doe</p>
               <span>Signer</span>
             </div>
             <div id="signer__video"></div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -53,7 +56,8 @@ export default {
     };
   },
   components: {
-    DocumentBox,ToolBox
+    DocumentBox,
+    ToolBox,
     // Icon,
   },
   setup() {
@@ -65,17 +69,20 @@ export default {
 
     let localTracks = [];
     let remoteUsers = {};
-    return {APP_ID, TOKEN, client, CHANNEL, localTracks, remoteUsers}
+    return { APP_ID, TOKEN, client, CHANNEL, localTracks, remoteUsers };
   },
-  
   methods: {
     async joinAndDisplayLocalStream() {
-
       this.client.on("user-published", this.handleUserJoined);
 
       this.client.on("user-left", this.handleUserLeft);
 
-      let UID = await this.client.join(this.APP_ID, this.CHANNEL, this.TOKEN, null);
+      let UID = await this.client.join(
+        this.APP_ID,
+        this.CHANNEL,
+        this.TOKEN,
+        null
+      );
 
       this.localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
 
@@ -108,7 +115,6 @@ export default {
     },
 
     async handleUserJoined(user, mediaType) {
-      
       this.remoteUsers[user.uid] = user;
       await this.client.subscribe(user, mediaType);
 
@@ -146,10 +152,9 @@ export default {
     },
 
     async leaveAndRemoveLocalStream() {
-      
-      for (let i = 0;  this.localTracks.length > i; i++) {
-         this.localTracks[i].stop();
-         this.localTracks[i].close();
+      for (let i = 0; this.localTracks.length > i; i++) {
+        this.localTracks[i].stop();
+        this.localTracks[i].close();
       }
 
       await this.client.leave();
@@ -159,35 +164,33 @@ export default {
     },
 
     async toggleMic(e) {
-      
-      if ( this.localTracks[0].muted) {
-        await  this.localTracks[0].setMuted(false);
+      if (this.localTracks[0].muted) {
+        await this.localTracks[0].setMuted(false);
         e.target.innerHTML = `<span class="iconify" data-icon="fa-solid:microphone"></span>`;
         e.target.style.backgroundColor = "";
       } else {
-        await  this.localTracks[0].setMuted(true);
+        await this.localTracks[0].setMuted(true);
         e.target.innerHTML = `<span class="iconify" data-icon="carbon:video-off-filled"></span>`;
         e.target.style.backgroundColor = "#EE4B2B";
       }
     },
 
     async toggleCamera(e) {
-      
-      if ( this.localTracks[1].muted) {
-        await  this.localTracks[1].setMuted(false);
+      if (this.localTracks[1].muted) {
+        await this.localTracks[1].setMuted(false);
         e.target.innerHTML = `<span class="iconify" data-icon="carbon:video-filled"></span>`;
         e.target.style.backgroundColor = "";
       } else {
-        await  this.localTracks[1].setMuted(true);
+        await this.localTracks[1].setMuted(true);
         e.target.innerHTML = `<span class="iconify" data-icon="carbon:video-off-filled"></span>`;
         e.target.style.backgroundColor = "";
       }
-    }
+    },
   },
   // mounted() {
   //   this.joinStream();
   // }
-}
+};
 </script>
 
 <style>
@@ -196,7 +199,6 @@ export default {
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: var(--bs-box-shadow);
- 
 }
 
 .tool__box,

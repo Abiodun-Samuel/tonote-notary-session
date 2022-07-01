@@ -83,7 +83,7 @@ export default {
 <style>
 .navbar{
    box-shadow: var(--bs-box-shadow);
-  
+   z-index: 1;
 }
 .navbar .logo{
    height: 25px;
