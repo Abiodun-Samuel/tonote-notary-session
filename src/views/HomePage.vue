@@ -4,7 +4,8 @@
       <div class="col-md-12 mt-5">
         <h4 class="fw-bolder">Test Audio and Video Quality</h4>
         <p>
-          Before your session is set up, please confirm that your camera and microphone are switched on.
+          Before your session is set up, please confirm that your camera and
+          microphone are switched on.
         </p>
       </div>
     </div>
@@ -12,23 +13,40 @@
     <div class="row">
       <div class="col-lg-7 col-md-6 my-2">
         <div class="video-container my-2">
-          <!-- <div class="notification">
-            <div class="my-2">
+          <div class="notification">
+            <div class="my-1" v-if="!camera && display_notification_2">
               <span class="d-flex justify-content-center align-items-center">
                 <Icon icon="carbon:video-off-filled" class="mx-1" /> Camera Off
               </span>
             </div>
-            <div class="my-2">
+            <div class="my-1" v-if="camera && display_notification_2">
+              <span class="d-flex justify-content-center align-items-center">
+                <Icon icon="carbon:video-filled" class="mx-1" /> Camera On
+              </span>
+            </div>
+            <div class="my-1" v-if="!microphone && display_notification">
               <span class="d-flex justify-content-center align-items-center">
                 <Icon icon="fa:microphone-slash" class="mx-1" /> Microphone Off
               </span>
             </div>
-          </div> -->
+            <div class="my-1" v-if="microphone & display_notification">
+              <span class="d-flex justify-content-center align-items-center">
+                <Icon icon="fa:microphone" class="mx-1" /> Microphone On
+              </span>
+            </div>
+          </div>
 
           <video class="shadow video" id="video" playsinline autoplay></video>
 
-          <div class="icon__container d-flex justify-content-between align-items-end">
-            <canvas class="shadow-sm hidden__two" id="canvas_two" width="36" height="36"></canvas>
+          <div
+            class="icon__container d-flex justify-content-between align-items-end"
+          >
+            <canvas
+              class="shadow-sm hidden__two"
+              id="canvas_two"
+              width="36"
+              height="36"
+            ></canvas>
 
             <div class="d-flex justify-content-start align-items-center">
               <button v-if="!camera" class="icon__off" @click="camera__on">
@@ -38,14 +56,27 @@
                 <Icon icon="carbon:video-filled" />
               </button>
 
-              <button v-if="!microphone" class="icon__off" @click="microphone__on">
+              <button
+                v-if="!microphone"
+                class="icon__off"
+                @click="microphone__on"
+              >
                 <Icon icon="fa:microphone-slash" />
               </button>
-              <button v-if="microphone" class="icon__on" @click="microphone__off">
+              <button
+                v-if="microphone"
+                class="icon__on"
+                @click="microphone__off"
+              >
                 <Icon icon="fa-solid:microphone" />
               </button>
             </div>
-            <canvas class="shadow-sm hidden__two" id="canvas" width="36" height="36"></canvas>
+            <canvas
+              class="shadow-sm hidden__two"
+              id="canvas"
+              width="36"
+              height="36"
+            ></canvas>
           </div>
         </div>
       </div>
@@ -59,9 +90,7 @@
               <img src="../assets/images/spinner.svg" width="40" height="40" alt="spinner" class="d-inline" /> -->
               <div class="mt-3">
                 <!-- <a href="/video" class="btn btn-primary">Proceed</a> -->
-                <button class="btn btn-primary" disabled>
-                  Proceed
-                </button>
+                <button class="btn btn-primary" disabled>Proceed</button>
               </div>
               <router-link to="/video">Proceed</router-link>
             </div>
@@ -70,7 +99,9 @@
         <div v-else>
           <div class="my-3">
             <div class="display-container">
-              <p class="h5 mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Asperiores, dicta
+              <p class="h5 mb-5">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Asperiores, dicta
               </p>
               <a href="/video" class="btn btn-primary">Proceed</a>
               <!-- <button class="btn btn-primary">
@@ -87,20 +118,22 @@
 <script>
 import { Icon } from "@iconify/vue";
 import { useToast } from "vue-toastification";
-  export default {
-    data() {
-      return {
-        camera: false,
-        microphone: false,
-      }
-    },
+export default {
+  data() {
+    return {
+      camera: false,
+      microphone: false,
+      display_notification: true,
+      display_notification_2: true,
+    };
+  },
   components: {
     Icon,
   },
   methods: {
-    
     async camera__on(event) {
-      this.camera = true
+      this.on_2();
+      this.camera = true;
       const video__player = document.querySelector("video#video");
       let videoStream;
       const video_constraints = {
@@ -112,7 +145,9 @@ import { useToast } from "vue-toastification";
         },
       };
       try {
-        const stream = await navigator.mediaDevices.getUserMedia(video_constraints);
+        const stream = await navigator.mediaDevices.getUserMedia(
+          video_constraints
+        );
         videoStream = stream;
         video__player.srcObject = videoStream;
         this.show_cam_on();
@@ -123,8 +158,10 @@ import { useToast } from "vue-toastification";
       if (event) {
         // alert(event.target.tagName)
       }
+      this.off_2();
     },
     async camera__off(event) {
+      this.on_2();
       this.camera = false;
       const video__player = document.querySelector("video#video");
       let videoStream;
@@ -137,7 +174,9 @@ import { useToast } from "vue-toastification";
         },
       };
       try {
-        const stream = await navigator.mediaDevices.getUserMedia(video_constraints);
+        const stream = await navigator.mediaDevices.getUserMedia(
+          video_constraints
+        );
         videoStream = stream;
 
         const tracks = videoStream.getTracks();
@@ -154,84 +193,88 @@ import { useToast } from "vue-toastification";
       if (event) {
         // alert(event.target.tagName)
       }
+      this.off_2();
     },
-    async microphone__on(event) {
+    async microphone__on() {
+      this.on();
       // const audio_constraints = {
       //   audio: true,
       //   video: false,
       // };
       // const video__player = document.querySelector("video#video");
       // let videoStream;
-      this.microphone = true
+      this.microphone = true;
       try {
         // const stream = await navigator.mediaDevices.getUserMedia(audio_constraints);
         // videoStream = stream;
         // video__player.srcObject = videoStream;
-        
       } catch (e) {
         console.error("navigator.getUserMedia error:", e);
       }
       this.show_mic_on();
       // `event` is the native DOM event
-      if (event) {
-        // alert(event.target.tagName)
-      }
+      this.off();
     },
-    async microphone__off(event) {
+    async microphone__off() {
+      this.on();
       // const audio_constraints = {
       //   audio: true,
       //   video: false,
       // };
       this.microphone = false;
+
       // const video__player = document.querySelector("video#video");
       // let videoStream;
       try {
         // const stream = await navigator.mediaDevices.getUserMedia(audio_constraints);
         // videoStream = stream;
         // video__player.srcObject = videoStream;
-        
       } catch (e) {
         console.error("navigator.getUserMedia error:", e);
       }
       this.show_mic_off();
-      // `event` is the native DOM event
-      if (event) {
-        // alert(event.target.tagName)
-      }
+      this.off();
     },
     show_cam_off() {
-      this.toast.error(
-         `Camera is Off`
-      );
+      this.toast.error(`Camera is Off`);
     },
     show_cam_on() {
-      this.toast.success(
-        `Camera is On`
-      );
+      this.toast.success(`Camera is On`);
     },
     show_mic_off() {
-      this.toast.error(
-        `Microphone is Off`
-      );
+      this.toast.error(`Microphone is Off`);
     },
     show_mic_on() {
-      this.toast.success(
-        `Microphone is On`
-      );
+      this.toast.success(`Microphone is On`);
+    },
+    off() {
+      setTimeout(() => {
+        this.display_notification = false;
+      }, 1000);
+    },
+    off_2() {
+      setTimeout(() => {
+        this.display_notification_2 = false;
+      }, 1000);
+    },
+    on() {
+      this.display_notification = true;
+    },
+    on_2() {
+      this.display_notification_2 = true;
     },
   },
   setup() {
     const toast = useToast();
-    return { toast }
+    return { toast };
   },
+
   // mounted() {
   //   this.show_cam_off();
   //   this.show_mic_off();
   // }
-}
-
+};
 </script>
-
 
 <style scoped>
 /* h4{
@@ -241,7 +284,7 @@ import { useToast } from "vue-toastification";
   height: 380px;
   position: relative;
 }
-.icon__container{
+.icon__container {
   position: absolute;
   bottom: 5px;
   left: 0;
@@ -330,45 +373,45 @@ import { useToast } from "vue-toastification";
 .hidden__two {
   visibility: hidden;
 }
-.icon__off{
+.icon__off {
   border-radius: 50%;
   height: 40px;
   width: 40px;
   border: 1.5px solid var(--bs-danger);
-  background:transparent;
+  background: transparent;
   padding: 3px;
   margin: 5px;
   font-size: 1rem;
   color: var(--bs-danger);
 }
-.icon__on{
+.icon__on {
   border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    border: 1.5px solid var(--bs-gray-600);
-    background: transparent;
-    padding: 3px;
-    font-size: 1rem;
-    margin: 5px;
-    color: var(--bs-gray-600);
+  height: 40px;
+  width: 40px;
+  border: 1.5px solid var(--bs-gray-600);
+  background: transparent;
+  padding: 3px;
+  font-size: 1rem;
+  margin: 5px;
+  color: var(--bs-gray-600);
 }
-.notification{
+.notification {
   position: absolute;
   top: 5px;
   right: 25%;
   left: 25%;
 }
-.notification span{
+.notification span {
   background: var(--bs-gray-900);
   border-radius: 1rem;
   color: var(--bs-gray-600);
   padding: 0.5rem;
 }
 button:disabled,
-button[disabled]{
+button[disabled] {
   background: #f2f2f2 !important;
   color: #7b7b7b !important;
-  border-color:#f2f2f2 !important;
+  border-color: #f2f2f2 !important;
   border: none;
   cursor: not-allowed !important;
   box-shadow: none;

@@ -2,7 +2,13 @@
   <div class="document__box">
     <h4 class="text-center">Document</h4>
     <div class="image__placeholder" @click="showModal">
-      <img class="passport" v-if="!imageNotReady" :src="imgSrc" alt="" />
+      <img
+        draggable="true"
+        class="passport"
+        v-if="!imageNotReady"
+        :src="imgSrc"
+        alt=""
+      />
       <!-- <div v-for="key in count" :key="key">
             <input type="text" v-model="values['dynamic-field-'+key]" size="50" placeholder="Another Field" :id="key">
          </div> -->
