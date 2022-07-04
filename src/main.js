@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import "vue-universal-modal/dist/index.css";
 import VueUniversalModal from "vue-universal-modal";
 import { Tabs, Tab } from "vue3-tabs-component";
+import "aos/dist/aos.css";
 
 // import "bootstrap-icons/font/bootstrap-icons.css";
 // import "bootstrap/dist/css/bootstrap.css";

@@ -1,8 +1,8 @@
 <template>
   <div class="container mt-5">
     <div class="row">
-      <div class="col-md-12 mt-5">
-        <h4 class="fw-bolder">Test Audio and Video Quality</h4>
+      <div class="col-md-12 mt-2">
+        <h3 class="fw-bolder">Test Audio and Video Quality</h3>
         <p>
           Before your session is set up, please confirm that your camera and
           microphone are switched on.
@@ -12,24 +12,41 @@
 
     <div class="row">
       <div class="col-lg-7 col-md-6 my-2">
-        <div class="video-container my-2">
+        <div class="video-container">
           <div class="notification">
-            <div class="my-1" v-if="!camera && display_notification_2">
+            <div
+              data-aos="zoom-in"
+              class="my-1"
+              v-if="!camera && display_notification_2"
+            >
               <span class="d-flex justify-content-center align-items-center">
                 <Icon icon="carbon:video-off-filled" class="mx-1" /> Camera Off
               </span>
             </div>
-            <div class="my-1" v-if="camera && display_notification_2">
+            <div
+              data-aos="zoom-in"
+              class="my-1"
+              v-if="camera && display_notification_2"
+            >
               <span class="d-flex justify-content-center align-items-center">
+                <!-- <span class="iconify" data-icon="fa:microphone-slash"></span> -->
                 <Icon icon="carbon:video-filled" class="mx-1" /> Camera On
               </span>
             </div>
-            <div class="my-1" v-if="!microphone && display_notification">
+            <div
+              data-aos="zoom-in"
+              class="my-1"
+              v-if="!microphone && display_notification"
+            >
               <span class="d-flex justify-content-center align-items-center">
                 <Icon icon="fa:microphone-slash" class="mx-1" /> Microphone Off
               </span>
             </div>
-            <div class="my-1" v-if="microphone & display_notification">
+            <div
+              data-aos="zoom-in"
+              class="my-1"
+              v-if="microphone & display_notification"
+            >
               <span class="d-flex justify-content-center align-items-center">
                 <Icon icon="fa:microphone" class="mx-1" /> Microphone On
               </span>
@@ -37,7 +54,6 @@
           </div>
 
           <video class="shadow video" id="video" playsinline autoplay></video>
-
           <div
             class="icon__container d-flex justify-content-between align-items-end"
           >
@@ -81,33 +97,37 @@
         </div>
       </div>
 
-      <div class="col-lg-5 col-md-6 text-center my-2">
-        <div v-if="$route.params.role !== 'notary'">
-          <div class="my-3">
-            <div class="display-container">
-              <p class="h5 mb-4">Connecting to the next available notary</p>
-              <!-- <p class="my-0 px-0 waiting">waiting</p>
-              <img src="../assets/images/spinner.svg" width="40" height="40" alt="spinner" class="d-inline" /> -->
-              <div class="mt-3">
-                <!-- <a href="/video" class="btn btn-primary">Proceed</a> -->
-                <button class="btn btn-primary" disabled>Proceed</button>
-              </div>
-              <router-link to="/video">Proceed</router-link>
-            </div>
+      <div class="col-lg-5 col-md-6 my-2">
+        <div v-if="$route.params.role !== 'notary'" class="display-container">
+          <div style="height: 30px" class="mb-3 ps-5">
+            <h4 class="element fw-bold"></h4>
+          </div>
+          <div class="text-center">
+            <!-- <a href="/video" class="btn btn-primary">Proceed</a> -->
+            <button class="btn btn-primary" disabled>Proceed</button><br />
+            <router-link target="_blank" to="/video">Proceed</router-link>
           </div>
         </div>
         <div v-else>
-          <div class="my-3">
-            <div class="display-container">
-              <p class="h5 mb-5">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Asperiores, dicta
-              </p>
-              <a href="/video" class="btn btn-primary">Proceed</a>
-              <!-- <button class="btn btn-primary">
+          <!-- <div class="my-3"> -->
+          <h4 class="element hidden"></h4>
+          <div class="display-container">
+            <h4 class="fw-bold mb-3 ps-5">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+              Asperiores, dicta
+            </h4>
+            <div class="text-center">
+              <a
+                target="_blank"
+                href="/video"
+                class="btn btn-primary d-inline-block"
+                >Proceed</a
+              >
+            </div>
+            <!-- <button class="btn btn-primary">
                 Proceed
               </button> -->
-            </div>
+            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -118,6 +138,9 @@
 <script>
 import { Icon } from "@iconify/vue";
 import { useToast } from "vue-toastification";
+import AOS from "aos";
+import Typed from "typed.js";
+
 export default {
   data() {
     return {
@@ -269,10 +292,16 @@ export default {
     return { toast };
   },
 
-  // mounted() {
-  //   this.show_cam_off();
-  //   this.show_mic_off();
-  // }
+  mounted() {
+    AOS.init({ duration: 500 });
+    new Typed(".element", {
+      strings: ["Connecting to the next available notary..."],
+      typeSpeed: 40,
+      showCursor: false,
+      loop: true,
+      backSpeed: 0,
+    });
+  },
 };
 </script>
 
@@ -294,15 +323,12 @@ export default {
   height: 380px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 }
 
 .video {
   width: 100%;
-  /* max-width: 1920px; */
   height: 100%;
-  /* max-height: 1080px; */
   background-color: #000000;
   border-radius: 5px;
 }
@@ -398,8 +424,8 @@ export default {
 .notification {
   position: absolute;
   top: 5px;
-  right: 25%;
-  left: 25%;
+  right: 30%;
+  left: 30%;
 }
 .notification span {
   background: var(--bs-gray-900);

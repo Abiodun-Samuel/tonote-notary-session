@@ -167,7 +167,7 @@
           </button>
         </div>
         <div class="modal__body">
-          <h4 class="my-3">
+          <h4 class="my-2 fw-bold lh-base">
             Do you want to upload your image or take a snap shot?
           </h4>
           <div>
@@ -178,7 +178,7 @@
               nav-item-class="nav-item"
               cache-lifetime="0"
             >
-              <tab name="Upload">
+              <tab name="Upload" data-aos="fade-right">
                 <div class="file-input">
                   <input
                     type="file"
@@ -187,26 +187,28 @@
                     class="file-input__input"
                     @change="handleImageUpload"
                   />
-                  <label class="file-input__label" for="file-input">
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="upload"
-                      class="svg-inline--fa fa-upload fa-w-16"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 512 512"
-                    >
-                      <path
-                        fill="currentColor"
-                        d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
-                      ></path>
-                    </svg>
-                    <span>Upload Image</span></label
-                  >
+                  <div class="d-flex justify-content-center align-items-center">
+                    <label class="file-input__label" for="file-input">
+                      <!-- <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="upload"
+                        class="svg-inline--fa fa-upload fa-w-16"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
+                        ></path>
+                      </svg> -->
+                      <span class="iconify" data-icon="bi:image"></span>
+                      <p>Upload Image</p>
+                    </label>
+                  </div>
                 </div>
-
                 <img
                   v-if="uploadImgSrc"
                   :src="uploadImgSrc"
@@ -214,8 +216,9 @@
                   class="mt-2"
                 />
               </tab>
-              <tab name="Snap Shot">
-                <div id="app" class="web-camera-container">
+
+              <tab name="Snap Shot" data-aos="fade-right">
+                <div id="" class="web-camera-container">
                   <div class="camera-button">
                     <button
                       type="button"
@@ -226,11 +229,24 @@
                       }"
                       @click="toggleCamera"
                     >
-                      <span v-if="!isCameraOpen">Open Camera</span>
-                      <span v-else>Close Camera</span>
+                      <span v-if="!isCameraOpen">
+                        <span
+                          class="iconify"
+                          data-icon="bi:camera-video-fill"
+                        ></span>
+                      </span>
+                      <!-- <span v-else>
+                        <span
+                          class="iconify"
+                          data-icon="bi:camera-video-off-fill"
+                        ></span>
+                      </span> -->
                     </button>
                   </div>
-
+                  <p data-aos="zoom-in" v-if="timer" class="mt-1 timer">
+                    {{ timer }}
+                  </p>
+                  <!-- <div class="camera-loading"> -->
                   <div
                     v-show="isCameraOpen && isLoading"
                     class="camera-loading"
@@ -270,11 +286,12 @@
                     ></canvas>
                   </div>
 
-                  <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
+                  <div
+                    v-if="isCameraOpen && !isLoading"
+                    class="camera-shoot mt-0 py-0 mb-1"
+                  >
                     <button type="button" class="button" @click="takePhoto">
-                      <img
-                        src="https://img.icons8.com/material-outlined/50/000000/camera--v2.png"
-                      />
+                      <span class="iconify" data-icon="bxs:camera"></span>
                     </button>
                   </div>
 
@@ -323,6 +340,8 @@
 
 <script>
 // import { ref } from "vue";
+import AOS from "aos";
+
 export default {
   data() {
     return {
@@ -338,6 +357,7 @@ export default {
       imgSrc: null,
       isDisabled: true,
       rawImg: "",
+      timer: null,
     };
   },
   methods: {
@@ -383,21 +403,31 @@ export default {
     },
 
     takePhoto() {
-      if (!this.isPhotoTaken) {
-        this.isShotPhoto = true;
-        this.isDisabled = false;
-        const FLASH_TIMEOUT = 50;
-        setTimeout(() => {
-          this.isShotPhoto = false;
-        }, FLASH_TIMEOUT);
-      }
+      let count = 3;
+      this.timer = 3;
+      setInterval(() => {
+        if (count >= 1) {
+          count--;
+          this.timer = count;
+        }
+      }, 1000);
 
-      // this.isPhotoTaken = !this.isPhotoTaken;
-      // this.imageNotReady = true;
-      const context = this.$refs.canvas.getContext("2d");
-      context.drawImage(this.$refs.camera, 0, 0, 450, 450);
-      this.snapImgSrc = context.canvas.toDataURL();
-      this.imgSrc = this.snapImgSrc;
+      setTimeout(() => {
+        if (!this.isPhotoTaken) {
+          this.isShotPhoto = true;
+          this.isDisabled = false;
+          const FLASH_TIMEOUT = 50;
+          setTimeout(() => {
+            this.isShotPhoto = false;
+          }, FLASH_TIMEOUT);
+        }
+        // this.isPhotoTaken = !this.isPhotoTaken;
+        // this.imageNotReady = true;
+        const context = this.$refs.canvas.getContext("2d");
+        context.drawImage(this.$refs.camera, 0, 0, 450, 450);
+        this.snapImgSrc = context.canvas.toDataURL();
+        this.imgSrc = this.snapImgSrc;
+      }, 3000);
     },
 
     downloadImage() {
@@ -464,6 +494,9 @@ export default {
     },
     //  },
   },
+  mounted() {
+    AOS.init({ duration: 500 });
+  },
 };
 
 // const img = ref(null);
@@ -474,15 +507,29 @@ export default {
   width: 50%;
   height: auto;
 }
-.tabs-component ul {
+.tabs-component .tabs-component-tabs {
   display: flex !important;
+  justify-content: center;
   list-style: none;
   font-size: 1rem;
-  border-bottom: 1px solid gray;
+  margin-bottom: 2rem;
 }
-.tabs-component ul li {
-  padding-right: 1rem;
+
+.tabs-component .tabs-component-tabs .nav-item a.tabs-component-tab-a {
+  border-bottom: 1.5px solid var(--bs-gray-100);
+  padding: 6px;
+  color: var(--bs-gray-100);
 }
+
+.tabs-component
+  .tabs-component-tabs
+  .nav-item
+  a.tabs-component-tab-a.is-active {
+  color: var(--bs-purple);
+  font-weight: bold;
+  border-bottom: 2px solid var(--bs-purple);
+}
+
 .modal {
   position: relative;
   display: flex;
@@ -518,7 +565,7 @@ export default {
   right: 0;
   width: 100px;
   height: 100px;
-  border: 1.4px solid lightblue;
+  /* border: 1.4px solid lightblue; */
   border-radius: 4px;
 }
 
@@ -530,19 +577,33 @@ export default {
 }
 
 .web-camera-container {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 2rem;
+  /* margin-top: 0.5rem;
+  margin-bottom: 0.5rem; */
+  /* padding: 2rem; */
+  /* border: 1.2px solid red;
+  height: 300px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
-  width: 500px;
+  /* border-radius: 4px; */
+  /* width: 500px; */
 }
 .web-camera-container .camera-button {
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
+  /* display: flex;
+  justify-content: space-between; */
 }
+
+.timer {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  background: var(--bs-purple);
+  color: #fff;
+  padding: 4px;
+}
+
 .web-camera-container .camera-box .camera-shutter {
   opacity: 0;
   width: 450px;
@@ -554,19 +615,20 @@ export default {
   opacity: 1;
 }
 .web-camera-container .camera-shoot {
-  margin: 1rem 0;
+  margin: 5px 0;
 }
 .web-camera-container .camera-shoot button {
-  height: 60px;
-  width: 60px;
+  height: 40px;
+  width: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 100%;
 }
-.web-camera-container .camera-shoot button img {
-  height: 35px;
-  object-fit: cover;
+.web-camera-container .camera-shoot button .iconify {
+  height: 30px;
+  width: 30px;
+  padding: 3.5px;
 }
 .web-camera-container .camera-loading {
   overflow: hidden;
@@ -627,6 +689,17 @@ export default {
   }
 }
 
+.file-input {
+  width: 100%;
+  height: 150px;
+  border: 1.2px solid var(--bs-gray-100);
+  border-radius: 4px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .file-input__input {
   width: 0.1px;
   height: 0.1px;
@@ -638,20 +711,25 @@ export default {
 
 .file-input__label {
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  font-size: 14px;
-  padding: 10px 12px;
-  background-color: #4245a8;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  /* border-radius: 4px; */
+  font-size: 1rem;
+  /* font-weight: 600; */
+  color: var(--bs-gray-100);
+  /* padding: 100%; */
+  /* background-color: var(--bs-purple); */
+  /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25); */
+}
+.file-input__label p {
+  margin: 5px;
+  padding: 0;
 }
 
-.file-input__label svg {
-  height: 16px;
-  margin-right: 4px;
+.file-input__label .iconify {
+  height: 45px;
+  width: 45px;
 }
 </style>

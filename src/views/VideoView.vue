@@ -15,26 +15,31 @@
       </div>
       <div class="col-lg-3 my-2">
         <div class="videocall__box p-2">
-          <!-- <div
+          <div
             class="notary__name d-flex justify-content-between align-items-baseline"
           >
-            <p>Abiodun Samuel</p>
+            <p class="my-0 py-0">Abiodun Samuel</p>
             <span>Notary</span>
           </div>
-          <div class="notary__video">
-            <div id="stream-wrapper">
-              <div id="stream-controls" class="my-2 d-inline-flex"></div>
-            </div>
-            <div id="video-streams"></div>
 
-            <div
+          <div class="notary__video">
+            <!-- notary video box  -->
+            <!-- <div id="stream-wrapper">
+              <div id="stream-controls"></div>
+            </div> -->
+            <div id="video-streams"></div>
+            <hr />
+            <!-- document owner and witness video box -->
+            <!-- <div
               class="signer__name d-flex justify-content-between align-items-baseline"
             >
               <p>John Doe</p>
               <span>Signer</span>
+            </div> -->
+            <div id="remote__users">
+              <!-- <div id="signer__video"></div> -->
             </div>
-            <div id="signer__video"></div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -86,13 +91,13 @@ export default {
 
       this.localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
 
-      let player = `<div style="margin: 0 auto;height: 230px;width: 230px; border-radius:4px !important;" class="video-container"  id="user-container-${UID}">
+      let player = `<div style="height: 230px;width: 230px;" class="video-container"  id="user-container-${UID}">
                         <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${UID}"></div>
                   </div><div class='mt-1 d-flex justify-content-center gap-1 align-items-center'>
-                <button id="mic-btn">
+                <button id="mic-btn" @click="toggleMic()">
                  <span class="iconify" data-icon="fa:microphone"></span>
                 </button>
-                <button id="camera-btn">
+                <button id="camera-btn" @click="toggleCamera()">
                  <span
                       class="iconify"
                       data-icon="carbon:video-filled"
@@ -111,7 +116,7 @@ export default {
     async joinStream() {
       await this.joinAndDisplayLocalStream();
       document.getElementById("join-btn").style.display = "none";
-      document.getElementById("stream-controls").style.display = "flex";
+      // document.getElementById("stream-controls").style.display = "flex";
     },
 
     async handleUserJoined(user, mediaType) {
@@ -125,18 +130,24 @@ export default {
           player_.remove();
         }
 
-        player_ = `<div style="margin: 0 auto;height: 230px;width: 230px; border-radius:4px !important;" class="video-container" id="user-container-${user.uid}">
-                        <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${user.uid}"></div> 
-                 </div> <button class="" id="leave-btn">leave</button>
+        player_ = `<div style="height: 100px;width: 100px;" class="video-container" id="user-container-${user.uid}">
+                        <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${user.uid}"></div>
+              <div class='mt-1 d-flex justify-content-center gap-1 align-items-center'>
                 <button id="mic-btn">
-                 mic
+                 <span class="iconify" data-icon="fa:microphone"></span>
                 </button>
                 <button id="camera-btn">
-                 cam
-                </button>`;
+                 <span
+                      class="iconify"
+                      data-icon="carbon:video-filled"
+                    ></span>
+                </button>
+                </div>
+                 </div> `;
         document
-          .getElementById("signer__video")
-          .insertAdjacentHTML("afterend", player_);
+          .getElementById("remote__users")
+          .insertAdjacentHTML("beforeend", player_);
+        // .insertAdjacentHTML("beforeend", player_);
 
         user.videoTrack.play(`user-${user.uid}`);
       }
@@ -159,7 +170,7 @@ export default {
 
       await this.client.leave();
       document.getElementById("join-btn").style.display = "block";
-      document.getElementById("stream-controls").style.display = "none";
+      // document.getElementById("stream-controls").style.display = "none";
       document.getElementById("video-streams").innerHTML = "";
     },
 
@@ -187,9 +198,9 @@ export default {
       }
     },
   },
-  // mounted() {
-  //   this.joinStream();
-  // }
+  mounted() {
+    this.joinStream();
+  },
 };
 </script>
 
@@ -199,6 +210,10 @@ export default {
   background-color: #ffffff;
   border-radius: 4px;
   box-shadow: var(--bs-box-shadow);
+}
+
+.videocall__box {
+  overflow-y: scroll;
 }
 
 .tool__box,
@@ -268,11 +283,18 @@ button[disabled]:hover {
   border-radius: 0.6rem !important;
   box-shadow: var(--bs-box-shadow);
 }
-#stream-controls {
+
+#remote__users {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  height: 100%;
+}
+/* #stream-controls {
   display: none;
   justify-content: center;
   margin-top: 0.5em;
-}
+} */
 
 /* @media screen and (max-width:1400px) {
   #video-streams {
