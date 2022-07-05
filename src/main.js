@@ -40,15 +40,9 @@ const app = createApp(App)
     teleportTarget: "#modals",
     modalComponent: "Modal",
   })
-  .use(VueToast, {
-    duration: 3000,
-    queue: false,
-    position: "top-right",
-    dismissible: true,
-    pauseOnHover: true,
-  })
+  .use(VueToast)
   .component("tabs", Tabs)
   .component("tab", Tab);
 app.mount("#app");
 
-app.$toast.open("You did it!");
+// app.$toast.open("You did it!");
