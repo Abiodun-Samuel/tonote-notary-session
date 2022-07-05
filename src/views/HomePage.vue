@@ -163,11 +163,12 @@ export default {
         audio: false,
         video: {
           aspectRatio: 1.777777778,
-          frameRate: { max: 30 },
+          // frameRate: { max: 30 },
           facingMode: { exact: "user" },
         },
       };
       try {
+        // navigator.mediaDevices.getUserMedia
         const stream = await navigator.mediaDevices.getUserMedia(
           video_constraints
         );
@@ -192,7 +193,7 @@ export default {
         audio: false,
         video: {
           aspectRatio: 1.777777778,
-          frameRate: { max: 30 },
+          // frameRate: { max: 30 },
           facingMode: { exact: "user" },
         },
       };
