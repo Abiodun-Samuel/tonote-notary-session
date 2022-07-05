@@ -164,11 +164,17 @@ export default {
         video: {
           aspectRatio: 1.777777778,
           // frameRate: { max: 30 },
-          facingMode: { exact: "user" },
+          facingMode: "user",
         },
       };
       try {
         // navigator.mediaDevices.getUserMedia
+        navigator.getUserMedia =
+          navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia ||
+          navigator.msGetUserMedia;
+          
         const stream = await navigator.mediaDevices.getUserMedia(
           video_constraints
         );
@@ -194,10 +200,16 @@ export default {
         video: {
           aspectRatio: 1.777777778,
           // frameRate: { max: 30 },
-          facingMode: { exact: "user" },
+          facingMode: "user",
         },
       };
       try {
+        navigator.getUserMedia =
+          navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia ||
+          navigator.msGetUserMedia;
+
         const stream = await navigator.mediaDevices.getUserMedia(
           video_constraints
         );
