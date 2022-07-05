@@ -7,6 +7,9 @@ import VueUniversalModal from "vue-universal-modal";
 import { Tabs, Tab } from "vue3-tabs-component";
 import "aos/dist/aos.css";
 
+import VueToast from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
+
 // import "bootstrap-icons/font/bootstrap-icons.css";
 // import "bootstrap/dist/css/bootstrap.css";
 
@@ -37,6 +40,15 @@ const app = createApp(App)
     teleportTarget: "#modals",
     modalComponent: "Modal",
   })
+  .use(VueToast, {
+    duration: 3000,
+    queue: false,
+    position: "top-right",
+    dismissible: true,
+    pauseOnHover: true,
+  })
   .component("tabs", Tabs)
   .component("tab", Tab);
 app.mount("#app");
+
+app.$toast.open("You did it!");
