@@ -199,7 +199,7 @@ export default {
     },
   },
   mounted() {
-    this.joinStream();
+    // this.joinStream();
   },
 };
 </script>

@@ -137,7 +137,6 @@
 
 <script>
 import { Icon } from "@iconify/vue";
-import { useToast } from "vue-toastification";
 import AOS from "aos";
 import Typed from "typed.js";
 
@@ -301,8 +300,6 @@ export default {
     },
   },
   setup() {
-    const toast = useToast();
-    return { toast };
   },
 
   mounted() {
