@@ -43,7 +43,6 @@ export default {
   background-color: #ebebeb;
   border: 1.3px solid rgb(223, 223, 255);
   padding: 4px;
-  /* box-shadow: var(--bs-box-shadow); */
 }
 
 .nav-link.active {

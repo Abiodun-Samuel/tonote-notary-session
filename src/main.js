@@ -7,6 +7,6 @@ import VueToast from "vue-toast-notification";
 import "bootstrap/dist/js/bootstrap.js";
 import "aos/dist/aos.css";
 import "vue-toast-notification/dist/theme-sugar.css";
+import "../node_modules/nprogress/nprogress.css";
 
-const app = createApp(App).use(router).use(store).use(VueToast);
-app.mount("#app");
+createApp(App).use(router).use(store).use(VueToast).mount("#app");

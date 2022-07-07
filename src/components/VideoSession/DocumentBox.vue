@@ -35,7 +35,10 @@
   >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
-        <div class="modal-header my-0">
+        <div class="modal-header">
+          <h4 class="fw-bolder m-auto py-1">
+            Upload image, take a picture or select
+          </h4>
           <button
             type="button"
             class="btn-close"
@@ -44,11 +47,7 @@
           ></button>
         </div>
         <div class="modal-body">
-          <div class="modal__header text-center mb-2">
-            <h4 class="fw-bolder">Upload image, take a picture or select</h4>
-          </div>
-
-          <div class="my-2">
+          <div class="">
             <TabNav
               :tabs="['Upload', 'Picture', 'Select']"
               :selected="selected"
@@ -98,6 +97,7 @@ import TakePicture from "../Document/TakePicture.vue";
 import SelectImage from "../Document/SelectImage.vue";
 import { mapState } from "vuex";
 import store from "@/store";
+// import axios from "axios";
 
 export default {
   data() {
@@ -225,6 +225,7 @@ export default {
     // },
     proceed() {
       store.commit("documentStore/showPassport");
+
     },
 
     handleImageUpload() {
