@@ -99,13 +99,18 @@
 
       <div class="col-lg-5 col-md-6 my-2">
         <div v-if="$route.params.role !== 'notary'" class="display-container">
+          <!-- <div v-if="userDetails.role[0] === 'User'" class="display-container"> -->
           <div style="height: 30px" class="mb-3 ps-5">
             <h4 class="element fw-bold"></h4>
           </div>
           <div class="text-center">
-            <!-- <a href="/video" class="btn btn-primary">Proceed</a> -->
-            <button class="btn btn-primary" disabled>Proceed</button><br />
-            <router-link target="_blank" to="/video">Proceed</router-link>
+            <button
+              class="btn btn-primary"
+              :disabled="!notaryReady"
+              @click="nav_to_videoSession"
+            >
+              Proceed</button
+            ><br />
           </div>
         </div>
         <div v-else>
@@ -124,10 +129,6 @@
                 >Proceed</a
               >
             </div>
-            <!-- <button class="btn btn-primary">
-                Proceed
-              </button> -->
-            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -139,10 +140,29 @@
 import { Icon } from "@iconify/vue";
 import AOS from "aos";
 import Typed from "typed.js";
+import { useStore } from "vuex";
+import { computed, onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+    const notaryReady = computed(
+      () => store.state.notarysessionStore.notaryReady
+    );
+    const userDetails = computed(() => store.state.userStore.userDetails);
+    const nav_to_videoSession = () => {
+      router.push({ name: "Video" });
+    };
+    onBeforeMount(() => {
+      store.dispatch("userStore/getUserProfile");
+    });
+    return { notaryReady, nav_to_videoSession, userDetails };
+  },
   data() {
     return {
+      name: "",
       camera: false,
       microphone: false,
       display_notification: true,
@@ -173,13 +193,12 @@ export default {
           navigator.webkitGetUserMedia ||
           navigator.mozGetUserMedia ||
           navigator.msGetUserMedia;
-          
+
         const stream = await navigator.mediaDevices.getUserMedia(
           video_constraints
         );
         videoStream = stream;
         video__player.srcObject = videoStream;
-        this.show_cam_on();
       } catch (e) {
         console.error("navigator.getUserMedia error:", e);
       }
@@ -220,7 +239,7 @@ export default {
           track.enabled = false;
         });
         video__player.srcObject = null;
-        this.show_cam_off();
+        // this.show_cam_off();
       } catch (e) {
         console.error("navigator.getUserMedia error:", e);
       }
@@ -246,8 +265,6 @@ export default {
       } catch (e) {
         console.error("navigator.getUserMedia error:", e);
       }
-      this.show_mic_on();
-      // `event` is the native DOM event
       this.off();
     },
     async microphone__off() {
@@ -265,22 +282,9 @@ export default {
         // videoStream = stream;
         // video__player.srcObject = videoStream;
       } catch (e) {
-        console.error("navigator.getUserMedia error:", e);
+        console.log("navigator.getUserMedia error:", e);
       }
-      this.show_mic_off();
       this.off();
-    },
-    show_cam_off() {
-      this.toast.error(`Camera is Off`);
-    },
-    show_cam_on() {
-      this.toast.success(`Camera is On`);
-    },
-    show_mic_off() {
-      this.toast.error(`Microphone is Off`);
-    },
-    show_mic_on() {
-      this.toast.success(`Microphone is On`);
     },
     off() {
       setTimeout(() => {
@@ -299,9 +303,6 @@ export default {
       this.display_notification_2 = true;
     },
   },
-  setup() {
-  },
-
   mounted() {
     AOS.init({ duration: 500 });
     new Typed(".element", {

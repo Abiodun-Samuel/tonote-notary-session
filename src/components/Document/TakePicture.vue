@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onUnmounted } from "vue";
 import AOS from "aos";
 import { useStore } from "vuex";
 var localMediaStream = null;
@@ -95,10 +95,32 @@ function startCapture() {
   );
 }
 
-// function stopCapture() {
-//   video.value.pause();
-//   localMediaStream.stop();
-// }
+function stopCapture() {
+  navigator.getUserMedia =
+    navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia;
+  window.URL = window.URL || window.webkitURL;
+
+  navigator.getUserMedia(
+    { video: true },
+    function (stream) {
+      const tracks = stream.getTracks();
+      tracks.forEach(function (track) {
+        track.stop();
+        track.enabled = false;
+      });
+    },
+    function (e) {
+      console.log(e);
+    }
+  );
+}
+
+onUnmounted(() => {
+  stopCapture();
+});
 
 onMounted(() => {
   AOS.init({ duration: 500 });

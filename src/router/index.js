@@ -18,7 +18,6 @@ const routes = [
     component: TestComponent,
     meta: {
       title: "Test Page",
-      // transitionName: "slide",
       metaTags: [
         {
           name: "description",
@@ -36,7 +35,7 @@ const routes = [
     name: "Home",
     component: HomePage,
     meta: {
-      title: "ToNote Notary Video Session",
+      title: "ToNote Notary Session",
       metaTags: [
         {
           name: "description",
@@ -53,7 +52,7 @@ const routes = [
     path: "/:role",
     component: HomePage,
     meta: {
-      title: "ToNote Notary Video Session",
+      title: "ToNote Notary Session",
       metaTags: [
         {
           name: "description",
@@ -68,10 +67,10 @@ const routes = [
   },
   {
     path: "/video",
-    name: "video",
+    name: "Video",
     component: VideoView,
     meta: {
-      title: "ToNote Notary Video Session",
+      title: "ToNote Notary Session",
       metaTags: [
         {
           name: "description",

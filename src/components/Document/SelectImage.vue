@@ -1,110 +1,53 @@
 <template lang="html">
-  <div class="my-3" v-if="uploadedPassport.length <= 0">
+  <div class="my-3" v-if="loading">
     <SkeletonLoader :loading="true" />
   </div>
-
-  <div class="uploaded__images my-3">
+  <div
+    class="uploaded__images my-3"
+    v-else-if="!loading && uploadedPassport?.length > 0"
+  >
     <label
       class="uploaded__image"
       :for="image.id"
       v-for="image in uploadedPassport"
       :key="image.id"
     >
-      <!-- <button
+      <button
         class="btn text-danger bg-transparent delete__btn"
-        @click="deleted(image.id)"
+        @click="deleted(image.id, image.file)"
       >
         <span class="iconify" data-icon="clarity:edit-solid"></span>
-      </button> -->
+      </button>
       <input checked type="radio" name="plan" :id="image.id" />
       <div class="plan-content" @click="select(image.file)">
         <img loading="lazy" :src="image.file" :alt="image.category" />
       </div>
     </label>
-    <!-- <label class="uploaded__image" for="basi">
-        <button
-          class="btn text-danger bg-transparent delete__btn"
-          @click="deleted"
-        >
-          <span class="iconify" data-icon="clarity:edit-solid"></span>
-        </button>
-        <input checked type="radio" name="plan" id="basi" />
-        <div class="plan-content" @click="select">
-          <img
-            loading="lazy"
-            src="https://raw.githubusercontent.com/ismailvtl/ismailvtl.github.io/master/images/life-saver-img.svg"
-            alt=""
-          />
-        </div>
-      </label> -->
   </div>
-
-  <!-- <div class="my-3 uploaded__image">
-    <button
-      class="m-1 btn"
-      v-for="image in uploadedPassport"
-      :key="image.id"
-      @click="selectFile(image.file)"
-    >
-      <img height="80" width="80" :src="image.file" :alt="image.category" />
-    </button>
-  </div> -->
+  <div class="my-3 text-center text-danger" v-else>
+    <h5 class="fw-bold">You do not have any picture saved.</h5>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, computed } from "vue";
 import SkeletonLoader from "../Loader/SkeletonLoader.vue";
-import axios from "axios";
 import { useStore } from "vuex";
-
 let store = useStore();
-let uploadedPassport = ref([]);
+
+const uploadedPassport = computed(() => store.state.documentStore.passports);
+const loading = computed(() => store.state.documentStore.loading);
 
 const select = (file) => {
   store.commit("documentStore/loadPassport", file);
 };
 
-// const deleted = async (id) => {
-//   try {
-//     const config = {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3MTY5MTQyLCJleHAiOjE2NTczNDE5NDIsIm5iZiI6MTY1NzE2OTE0MiwianRpIjoic2Q2QVhJOFFSTkJCUHZiaCIsInN1YiI6IjQ3MmJlNjNlLTRmNWEtNDZjMy1hN2RhLTdmNWViNTI5MDAyZCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.r-v1f12A8z5vsYDGWA5F-54oVR-6b6u7UxTp9r-4Y6Q`,
-//       },
-//     };
+const deleted = (id, file) => {
+  store.dispatch("documentStore/deletePassport", { id, file });
+};
 
-//     await axios.delete(
-//       `http://tonote-api.herokuapp.com/api/v1/prints/${id}`,
-//       config
-//     );
-//     const result = uploadedPassport.value.filter((img) => {
-//       return img !== img.file;
-//     });
-//     uploadedPassport.value = result;
-//   } catch (error) {
-//     console.log(error);
-//   }
-//   // store.commit("documentStore/loadPassport", file);
-// };
-
-onMounted(async () => {
-  try {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3MTY5MTQyLCJleHAiOjE2NTczNDE5NDIsIm5iZiI6MTY1NzE2OTE0MiwianRpIjoic2Q2QVhJOFFSTkJCUHZiaCIsInN1YiI6IjQ3MmJlNjNlLTRmNWEtNDZjMy1hN2RhLTdmNWViNTI5MDAyZCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.r-v1f12A8z5vsYDGWA5F-54oVR-6b6u7UxTp9r-4Y6Q`,
-      },
-    };
-
-    const response = await axios.get(
-      `http://tonote-api.herokuapp.com/api/v1/prints`,
-      config
-    );
-    uploadedPassport.value = response.data.data.Photograph;
-    //  console.log(uploadedPassport.value);
-  } catch (error) {
-    console.log(error);
-  }
+onMounted(() => {
+  store.dispatch("documentStore/getPassports");
 });
 </script>
 
@@ -155,7 +98,7 @@ onMounted(async () => {
   transition: box-shadow 0.4s, -webkit-box-shadow 0.4s;
   position: relative;
   width: 120px;
-  height: 120px;
+  height: auto;
 }
 .delete__btn {
   position: absolute;
@@ -166,6 +109,7 @@ onMounted(async () => {
 }
 .uploaded__images .uploaded__image .plan-content img {
   max-width: 100%;
+  max-height: 100%;
   margin: 0 auto;
 }
 

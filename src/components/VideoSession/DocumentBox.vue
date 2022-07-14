@@ -8,19 +8,20 @@
     >
       <img class="passport" v-if="show" :src="passport" />
     </div>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi consectetur
-      soluta pariatur facere minima aliquam perferendis dolores velit adipisci!
-      Veritatis mollitia odio, eaque repellat illo incidunt eveniet voluptatibus
-      quas deserunt beatae! Nihil asperiores, officiis exercitationem voluptas
-      ex consequatur velit. Doloribus pariatur totam quia debitis suscipit quis!
-      Alias harum omnis sed blanditiis. Delectus saepe fugit minus veniam
-      facilis ipsa illum quaerat, reprehenderit iusto et doloremque assumenda ea
-      quo laboriosam animi veritatis accusamus maxime tempora voluptas pariatur
-      odio tempore repellat eligendi! Sequi, amet! Aspernatur, placeat
-      dignissimos! Numquam libero molestias rem tempore ea quia repudiandae
-      fugiat corrupti neque suscipit voluptate porro, esse ullam!
-    </p>
+
+    <div class="card-body mail-message-wrapper pt-2">
+      <div class="mail-message">
+        <div v-for="(doc, index) in files" class="border mb-1" :key="index">
+          <span class="d-block text-center">
+            <img :src="doc.file" class="img-fluid" :alt="doc.id" />
+          </span>
+
+          <div class="clearfix">
+            <h6 class="float-end">Page {{ ++index }} of {{ files.length }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Modal -->
@@ -88,7 +89,7 @@
   </div>
 </template>
 
-<script>
+<script lang="js">
 import AOS from "aos";
 import TabNav from "../Tab/TabNav.vue";
 import TabComponent from "../Tab/TabComponent.vue";
@@ -97,23 +98,11 @@ import TakePicture from "../Document/TakePicture.vue";
 import SelectImage from "../Document/SelectImage.vue";
 import { mapState } from "vuex";
 import store from "@/store";
-// import axios from "axios";
 
 export default {
   data() {
     return {
       selected: "Upload",
-      isCameraOpen: false,
-      isPhotoTaken: false,
-      isShotPhoto: false,
-      isLoading: false,
-      link: "#",
-      isShow: false,
-      imageNotReady: true,
-      snapImgSrc: null,
-      // imgSrc: null,
-      // rawImg: "",
-      timer: null,
     };
   },
   components: { TabNav, TabComponent, ImageUpload, TakePicture, SelectImage },
@@ -121,130 +110,26 @@ export default {
     ...mapState("documentStore", { passport: (state) => state.passport }),
     ...mapState("documentStore", { isDisabled: (state) => state.isDisabled }),
     ...mapState("documentStore", { show: (state) => state.show }),
+    ...mapState("documentStore", {
+      files: (state) => state.documents.files.documentUploads,
+    }),
   },
   methods: {
     setSelected(tab) {
       this.selected = tab;
     },
-    toggleCamera() {
-      if (this.isCameraOpen) {
-        this.isCameraOpen = false;
-        this.isPhotoTaken = false;
-        this.isShotPhoto = false;
-        //   this.stopCameraStream();
-      } else {
-        this.isCameraOpen = true;
-        this.createCameraElement();
-      }
-    },
-    createCameraElement() {
-      this.isLoading = true;
-
-      const constraints = (window.constraints = {
-        audio: false,
-        video: true,
-      });
-
-      navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((stream) => {
-          this.isLoading = false;
-          this.$refs.camera.srcObject = stream;
-        })
-        .catch((error) => {
-          this.isLoading = false;
-          console.log(
-            "May the browser didn't support or there is some errors." + error
-          );
-        });
-    },
-
-    stopCameraStream() {
-      let tracks = this.$refs.camera.srcObject.getTracks();
-      tracks.forEach((track) => {
-        track.stop();
-      });
-    },
-
-    takePhoto() {
-      let count = 3;
-      this.timer = 3;
-      setInterval(() => {
-        if (count >= 1) {
-          count--;
-          this.timer = count;
-        }
-      }, 1000);
-
-      setTimeout(() => {
-        if (!this.isPhotoTaken) {
-          this.isShotPhoto = true;
-          this.isDisabled = false;
-          const FLASH_TIMEOUT = 50;
-          setTimeout(() => {
-            this.isShotPhoto = false;
-          }, FLASH_TIMEOUT);
-        }
-        // this.isPhotoTaken = !this.isPhotoTaken;
-        // this.imageNotReady = true;
-        const context = this.$refs.canvas.getContext("2d");
-        context.drawImage(this.$refs.camera, 0, 0, 450, 450);
-        this.snapImgSrc = context.canvas.toDataURL();
-        this.imgSrc = this.snapImgSrc;
-      }, 3000);
-    },
-
-    // downloadImage() {
-    //   const download = document.getElementById("downloadPhoto");
-    //   const canvas = document
-    //     .getElementById("photoTaken")
-    //     .toDataURL("image/jpeg")
-    //     .replace("image/jpeg", "image/octet-stream");
-    //   download.setAttribute("src", canvas);
-    // },
-
-    // showModal() {
-    //   this.isShow = true;
-    // },
-    // closeModal() {
-    //   this.isShow = false;
-    //   this.isCameraOpen = false;
-    //   // this.imageNotReady = false;
-    //   this.snapImgSrc = "";
-    //   this.uploadImgSrc = "";
-    //   // this.imgSrc = "";
-    //   // this.stopCameraStream();
-    // },
-    // beforeEnter() {
-    //   this.isCameraOpen = false;
-    //   // this.uploadImgSrc = null;
-    //   // this.snapImgSrc = null;
-    //   // this.isDisabled = true;
-    //   // this.imageNotReady = true;
-    //   // this.stopCameraStream();
-    // },
     proceed() {
       store.commit("documentStore/showPassport");
-
+      store.dispatch("documentStore/postPassport");
     },
-
-    handleImageUpload() {
-      const file = document.querySelector("input[type=file]").files[0];
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        this.rawImg = reader.result;
-        this.uploadImgSrc = this.rawImg;
-        this.imgSrc = this.uploadImgSrc;
-        this.isDisabled = false;
-      };
-      reader.readAsDataURL(file);
-    },
-    //  },
   },
 
   mounted() {
     AOS.init({ duration: 500 });
+    store.dispatch(
+      "documentStore/getDocument",
+      "ba67f5db-e70f-43a6-9dcb-56620495b7c5"
+    );
   },
 };
 </script>

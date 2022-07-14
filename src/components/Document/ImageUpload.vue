@@ -36,7 +36,6 @@
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import AOS from "aos";
-import axios from "axios";
 
 let store = useStore();
 let uploadImgSrc = ref(false);
@@ -58,26 +57,6 @@ const handleImageUpload = () => {
   reader.onloadend = async () => {
     uploadImgSrc.value = reader.result;
     store.commit("documentStore/loadPassport", uploadImgSrc.value);
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3MTY5MTQyLCJleHAiOjE2NTczNDE5NDIsIm5iZiI6MTY1NzE2OTE0MiwianRpIjoic2Q2QVhJOFFSTkJCUHZiaCIsInN1YiI6IjQ3MmJlNjNlLTRmNWEtNDZjMy1hN2RhLTdmNWViNTI5MDAyZCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.r-v1f12A8z5vsYDGWA5F-54oVR-6b6u7UxTp9r-4Y6Q`,
-        },
-      };
-
-      await axios.post(
-        `http://tonote-api.herokuapp.com/api/v1/prints`,
-        {
-          file: uploadImgSrc.value,
-          category: "Upload",
-          type: "Photograph",
-        },
-        config
-      );
-    } catch (error) {
-      console.log(error);
-    }
   };
   reader.readAsDataURL(file);
 };
