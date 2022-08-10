@@ -46,7 +46,7 @@ const actions = {
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3NjQ1OTE2LCJleHAiOjE2NTc4MTg3MTYsIm5iZiI6MTY1NzY0NTkxNiwianRpIjoiWUc2aHJNOFRkT0ZyOWtHMSIsInN1YiI6IjNjOWUxZGU0LTUzMGQtNDk3OC05NjU1LTgyMjdlNmE2MjViNSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.z-dngGtL5pyHvEiWprSqmTr1Z_MEu_VJtJWKrg3H5sw`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL3JlZ2lzdGVyIiwiaWF0IjoxNjU3ODE3MjAyLCJleHAiOjE2NTc5OTAwMDIsIm5iZiI6MTY1NzgxNzIwMiwianRpIjoiYlI5Z0luRHplNHJHTWZKQiIsInN1YiI6IjQ2NzlmZGMwLTY4NGItNGYzYi04YWEzLWNhOTk2NzAxNDlmYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RRG117D0C0y4U0PJVYRZnmtAq55Y6kL_xAMBmdUPrCQ`,
         },
       };
 
@@ -70,7 +70,7 @@ const actions = {
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3NjQ1OTE2LCJleHAiOjE2NTc4MTg3MTYsIm5iZiI6MTY1NzY0NTkxNiwianRpIjoiWUc2aHJNOFRkT0ZyOWtHMSIsInN1YiI6IjNjOWUxZGU0LTUzMGQtNDk3OC05NjU1LTgyMjdlNmE2MjViNSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.z-dngGtL5pyHvEiWprSqmTr1Z_MEu_VJtJWKrg3H5sw`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL3JlZ2lzdGVyIiwiaWF0IjoxNjU3ODE3MjAyLCJleHAiOjE2NTc5OTAwMDIsIm5iZiI6MTY1NzgxNzIwMiwianRpIjoiYlI5Z0luRHplNHJHTWZKQiIsInN1YiI6IjQ2NzlmZGMwLTY4NGItNGYzYi04YWEzLWNhOTk2NzAxNDlmYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RRG117D0C0y4U0PJVYRZnmtAq55Y6kL_xAMBmdUPrCQ`,
         },
       };
 
@@ -90,7 +90,7 @@ const actions = {
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3NjQ1OTE2LCJleHAiOjE2NTc4MTg3MTYsIm5iZiI6MTY1NzY0NTkxNiwianRpIjoiWUc2aHJNOFRkT0ZyOWtHMSIsInN1YiI6IjNjOWUxZGU0LTUzMGQtNDk3OC05NjU1LTgyMjdlNmE2MjViNSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.z-dngGtL5pyHvEiWprSqmTr1Z_MEu_VJtJWKrg3H5sw`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL3JlZ2lzdGVyIiwiaWF0IjoxNjU3ODE3MjAyLCJleHAiOjE2NTc5OTAwMDIsIm5iZiI6MTY1NzgxNzIwMiwianRpIjoiYlI5Z0luRHplNHJHTWZKQiIsInN1YiI6IjQ2NzlmZGMwLTY4NGItNGYzYi04YWEzLWNhOTk2NzAxNDlmYSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.RRG117D0C0y4U0PJVYRZnmtAq55Y6kL_xAMBmdUPrCQ`,
         },
       };
 
@@ -116,7 +116,7 @@ const actions = {
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3NjQ1OTE2LCJleHAiOjE2NTc4MTg3MTYsIm5iZiI6MTY1NzY0NTkxNiwianRpIjoiWUc2aHJNOFRkT0ZyOWtHMSIsInN1YiI6IjNjOWUxZGU0LTUzMGQtNDk3OC05NjU1LTgyMjdlNmE2MjViNSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.z-dngGtL5pyHvEiWprSqmTr1Z_MEu_VJtJWKrg3H5sw`,
+          Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vdG9ub3RlLWFwaS5oZXJva3VhcHAuY29tL2FwaS92MS91c2VyL2xvZ2luIiwiaWF0IjoxNjU3ODA4OTA4LCJleHAiOjE2NTc5ODE3MDgsIm5iZiI6MTY1NzgwODkwOCwianRpIjoidjFKaTRGME5hS1E3cUZhYiIsInN1YiI6IjNjOWUxZGU0LTUzMGQtNDk3OC05NjU1LTgyMjdlNmE2MjViNSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.zYO3dUmp06FTFll-uxdqcIFS190bjCRtImR4lOcpTv0`,
         },
       };
 

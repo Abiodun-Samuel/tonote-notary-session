@@ -34,9 +34,10 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 import { useStore } from "vuex";
 
 const store = useStore();
-const APP_ID = process.env.VUE_APP_AGORA_APP_ID;
-const TOKEN = process.env.VUE_APP_AGORA_TOKEN;
-const CHANNEL = "demo";
+const APP_ID = "37920f89764044aeac67ed12e096afde";
+const TOKEN =
+  "00637920f89764044aeac67ed12e096afdeIABOlt3WWvdiBR/FisZudmbtwBpsPzbwFmPAdAs1lN7ndvVg3hTlrh0mIgC7LfvqH5z0YgQAAQDfY/RiAgDfY/RiAwDfY/RiBADfY/Ri";
+const CHANNEL = "demoroom";
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 let localTracks = [];
 let remoteUsers = {};
@@ -53,10 +54,10 @@ const joinAndDisplayLocalStream = async () => {
   client.on("user-published", handleUserJoined);
   client.on("user-left", handleUserLeft);
   // options.appId, options.channel, token, uid
-  let UID = await client.join(APP_ID, CHANNEL, TOKEN, null);
+  let UID = await client.join(APP_ID, CHANNEL, TOKEN, "1234567890");
 
   localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
-  //   create screen sharing stream
+  // create screen sharing stream
   // AgoraRTC.createScreenVideoTrack(
   //   {
   //     encoderConfig: {
