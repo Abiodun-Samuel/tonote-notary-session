@@ -9,6 +9,30 @@
       <img class="passport" v-if="show" :src="passport" />
     </div>
 
+    <div class="parent">
+      <Vue3DraggableResizable
+        :initW="110"
+        :initH="120"
+        v-model:x="x"
+        v-model:y="y"
+        v-model:w="w"
+        v-model:h="h"
+        v-model:active="active"
+        :draggable="true"
+        :resizable="true"
+        @activated="print('activated')"
+        @deactivated="print('deactivated')"
+        @drag-start="print('drag-start')"
+        @resize-start="print('resize-start')"
+        @dragging="print('dragging')"
+        @resizing="print('resizing')"
+        @drag-end="print('drag-end')"
+        @resize-end="print('resize-end')"
+      >
+        This is a test example
+      </Vue3DraggableResizable>
+    </div>
+
     <div class="card-body mail-message-wrapper pt-2">
       <div class="mail-message">
         <div v-for="(doc, index) in files" class="border mb-1" :key="index">
@@ -98,14 +122,20 @@ import TakePicture from "../Document/TakePicture.vue";
 import SelectImage from "../Document/SelectImage.vue";
 import { mapState } from "vuex";
 import store from "@/store";
+import Vue3DraggableResizable from 'vue3-draggable-resizable'
 
 export default {
   data() {
     return {
       selected: "Upload",
+      x: 100,
+      y: 100,
+      h: 100,
+      w: 100,
+      active: false
     };
   },
-  components: { TabNav, TabComponent, ImageUpload, TakePicture, SelectImage },
+  components: { TabNav, TabComponent, ImageUpload, TakePicture, SelectImage, Vue3DraggableResizable },
   computed: {
     ...mapState("documentStore", { passport: (state) => state.passport }),
     ...mapState("documentStore", { isDisabled: (state) => state.isDisabled }),
@@ -115,6 +145,9 @@ export default {
     }),
   },
   methods: {
+    print(val) {
+      console.log(val)
+    },
     setSelected(tab) {
       this.selected = tab;
     },
