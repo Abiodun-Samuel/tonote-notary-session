@@ -10,27 +10,51 @@
     </div>
 
     <div class="parent">
-      <Vue3DraggableResizable
-        :initW="110"
-        :initH="120"
-        v-model:x="x"
-        v-model:y="y"
-        v-model:w="w"
-        v-model:h="h"
-        v-model:active="active"
-        :draggable="true"
-        :resizable="true"
-        @activated="print('activated')"
-        @deactivated="print('deactivated')"
-        @drag-start="print('drag-start')"
-        @resize-start="print('resize-start')"
-        @dragging="print('dragging')"
-        @resizing="print('resizing')"
-        @drag-end="print('drag-end')"
-        @resize-end="print('resize-end')"
-      >
-        This is a test example
-      </Vue3DraggableResizable>
+      <DraggableContainer :disabled="false">
+        <Vue3DraggableResizable
+          :initW="100"
+          :initH="100"
+          v-model:x="x1"
+          v-model:y="y1"
+          v-model:w="w1"
+          v-model:h="h1"
+          v-model:active="active"
+          :draggable="true"
+          :resizable="false"
+          @activated="print('activated')"
+          @deactivated="print('deactivated')"
+          @drag-start="print('drag-start')"
+          @resize-start="print('resize-start')"
+          @dragging="print('dragging')"
+          @resizing="print('resizing')"
+          @drag-end="dragEndHandle"
+          @resize-end="print('resize-end')"
+        >
+          test
+        </Vue3DraggableResizable>
+
+        <Vue3DraggableResizable
+          :initW="50"
+          :initH="50"
+          v-model:x="x"
+          v-model:y="y"
+          v-model:w="w"
+          v-model:h="h"
+          v-model:active="active"
+          :draggable="true"
+          :resizable="false"
+          @activated="print('activated')"
+          @deactivated="print('deactivated')"
+          @drag-start="print('drag-start')"
+          @resize-start="print('resize-start')"
+          @dragging="print('dragging')"
+          @resizing="print('resizing')"
+          @drag-end="dragEndHandle"
+          @resize-end="print('resize-end')"
+        >
+          another two
+        </Vue3DraggableResizable>
+      </DraggableContainer>
     </div>
 
     <div class="card-body mail-message-wrapper pt-2">
@@ -122,7 +146,9 @@ import TakePicture from "../Document/TakePicture.vue";
 import SelectImage from "../Document/SelectImage.vue";
 import { mapState } from "vuex";
 import store from "@/store";
+// import { DraggableContainer } from 'vue3-draggable-resizable'
 import Vue3DraggableResizable from 'vue3-draggable-resizable'
+import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css'
 
 export default {
   data() {
@@ -135,7 +161,7 @@ export default {
       active: false
     };
   },
-  components: { TabNav, TabComponent, ImageUpload, TakePicture, SelectImage, Vue3DraggableResizable },
+  components: { TabNav, TabComponent, ImageUpload, TakePicture, SelectImage, Vue3DraggableResizable,  },
   computed: {
     ...mapState("documentStore", { passport: (state) => state.passport }),
     ...mapState("documentStore", { isDisabled: (state) => state.isDisabled }),
@@ -145,6 +171,9 @@ export default {
     }),
   },
   methods: {
+    dragEndHandle( {x, y}){
+      console.log({x,y});
+    },
     print(val) {
       console.log(val)
     },
@@ -168,6 +197,16 @@ export default {
 </script>
 
 <style>
+.parent {
+  width: 800px;
+  height: 800px;
+  position: absolute;
+  /* top: 100px;
+  left: 100px; */
+  border: 1px solid #000;
+  user-select: none;
+}
+
 #display__snapshot {
   width: 50%;
   height: auto;
@@ -183,6 +222,7 @@ export default {
   border-radius: 4px;
   box-shadow: var(--bs-box-shadow);
   padding: 2rem;
+  height: 90vh;
 }
 .image__placeholder {
   position: absolute;
