@@ -6,18 +6,18 @@
 export default {
   props: ["remoteStream", "domId"],
   mounted() {
-    //  console.log(this.remoteStream);
+     console.log(this.remoteStream);
     this.$nextTick(function () {
       if (this.remoteStream) {
-        //   this.remoteStream.videoTrack.play(
-        //     `${this.domId}`,
-        //     { fit: "cover" },
-        //     (err) => {
-        //       if (err && err.status !== "aborted") {
-        //         console.warn("trigger autoplay policy");
-        //       }
-        //     }
-        //   );
+          this.remoteStream.videoTrack.play(
+            `${this.domId}`,
+            { fit: "cover" },
+            (err) => {
+              if (err && err.status !== "aborted") {
+                console.warn("trigger autoplay policy");
+              }
+            }
+          );
         this.remoteStream.audioTrack.play();
       }
     });

@@ -24,7 +24,10 @@
         :key="index"
         v-for="(remoteStream, index) in remoteStreams"
       >
-        <RemotePlayer :remoteStream="remoteStream" :domId="1"></RemotePlayer>
+        <RemotePlayer
+          :remoteStream="remoteStream"
+          :domId="remoteStream.uid"
+        ></RemotePlayer>
         <!-- :domId="remoteStream.getId()" -->
       </div>
     </div>
@@ -122,7 +125,7 @@ const joinAndDisplayLocalStream = async () => {
 
   // localTracks[1].play(`user-${UID}`);
   // localVideo.play(document.body);
-  await client.publish(localAudio.value, localVideo.value);
+  await client.publish([localAudio.value, localVideo.value]);
   // await client.publish([localTracks.value[0], localTracks.value[1]]);
 };
 
@@ -138,7 +141,6 @@ const handleUserJoined = async (user, mediaType) => {
   // console.log(remotes);
   // media.value = mediaType;
   await client.subscribe(user, mediaType);
-
   remoteStreams.value.push(user);
 
   if (mediaType === "video") {
@@ -169,7 +171,7 @@ const handleUserJoined = async (user, mediaType) => {
   }
 
   if (mediaType === "audio") {
-    user.audioTrack.play();
+    // user.audioTrack.play();
   }
 };
 
