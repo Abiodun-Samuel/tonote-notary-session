@@ -88,7 +88,7 @@ const joinAndDisplayLocalStream = async () => {
   client.on("user-left", handleUserLeft);
   // options.appId, options.channel, token, uid
   // await client.join(APP_ID, CHANNEL, TOKEN, null);
-  UID.value = await client.join(APP_ID, CHANNEL, TOKEN, null);
+  UID.value = await client.join(APP_ID, CHANNEL, TOKEN, "12345678");
 
   // localTracks.value = await AgoraRTC.createMicrophoneAndCameraTracks();
   localAudio.value = await AgoraRTC.createMicrophoneAudioTrack();
