@@ -7,40 +7,70 @@
       <span>Notary</span>
     </div>
 
-    <div class="notary__video">
-      <!-- notary video box  -->
-      <!-- <div id="stream-wrapper">
-              <div id="stream-controls"></div>
-            </div> -->
-      <div id="video-streams"></div>
-      <hr />
-      <!-- document owner and witness video box -->
-      <!-- <div
-              class="signer__name d-flex justify-content-between align-items-baseline"
-            >
-              <p>John Doe</p>
-              <span>Signer</span>
-            </div> -->
-      <div id="remote__users">
-        <!-- <div id="signer__video"></div> -->
+    <div class="agora-view">
+      <div class="agora-video">
+        <StreamPlayer
+          :localAudio="localAudio"
+          :localVideo="localVideo"
+          :domId="UID"
+          v-if="localVideo"
+        >
+        </StreamPlayer>
+      </div>
+
+      <!-- for remote streams  -->
+      <div
+        class="agora-video"
+        :key="index"
+        v-for="(remoteStream, index) in remoteStreams"
+      >
+        <RemotePlayer :remoteStream="remoteStream" :domId="1"></RemotePlayer>
+        <!-- :domId="remoteStream.getId()" -->
       </div>
     </div>
+    <!-- <div class="notary__video">
+      <div id="player"></div> -->
+    <!-- notary video box  -->
+    <!-- <div id="stream-wrapper">
+        <div id="stream-controls"></div>
+      </div>
+      <div id="video-streams"></div>
+      <hr /> -->
+    <!-- document owner and witness video box -->
+    <!-- <div
+        class="signer__name d-flex justify-content-between align-items-baseline"
+      >
+        <p>John Doe</p>
+        <span>Signer</span>
+      </div>
+      <div id="remote__users">
+        <div id="signer__video"></div>
+      </div> -->
+    <!-- </div> -->
   </div>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import { useStore } from "vuex";
+import StreamPlayer from "@/components/VideoSession/stream-player.vue";
+import RemotePlayer from "@/components/VideoSession/RemotePlayer.vue";
 
+AgoraRTC.setLogLevel(4);
 const store = useStore();
 const APP_ID = "37920f89764044aeac67ed12e096afde";
 const TOKEN =
-  "00637920f89764044aeac67ed12e096afdeIABOlt3WWvdiBR/FisZudmbtwBpsPzbwFmPAdAs1lN7ndvVg3hTlrh0mIgC7LfvqH5z0YgQAAQDfY/RiAgDfY/RiAwDfY/RiBADfY/Ri";
+  "00637920f89764044aeac67ed12e096afdeIAC6NMzhJeAlP/QBHLG87PECmuXTE5HgEJrtYedRFmlrAfVg3hQAAAAAEACLq5A095P3YgEAAQD3k/di";
 const CHANNEL = "demoroom";
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-let localTracks = [];
-let remoteUsers = {};
+// let localTracks = ref([]);
+let remoteStreams = ref([]);
+// let remotes = [];
+let UID = ref(null);
+let localAudio = ref(null);
+let localVideo = ref(null);
+// let media = ref("");
 
 onMounted(() => {
   joinStream();
@@ -54,9 +84,13 @@ const joinAndDisplayLocalStream = async () => {
   client.on("user-published", handleUserJoined);
   client.on("user-left", handleUserLeft);
   // options.appId, options.channel, token, uid
-  let UID = await client.join(APP_ID, CHANNEL, TOKEN, "1234567890");
+  // await client.join(APP_ID, CHANNEL, TOKEN, null);
+  UID.value = await client.join(APP_ID, CHANNEL, TOKEN, null);
 
-  localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
+  // localTracks.value = await AgoraRTC.createMicrophoneAndCameraTracks();
+  localAudio.value = await AgoraRTC.createMicrophoneAudioTrack();
+  localVideo.value = await AgoraRTC.createCameraVideoTrack();
+
   // create screen sharing stream
   // AgoraRTC.createScreenVideoTrack(
   //   {
@@ -69,25 +103,27 @@ const joinAndDisplayLocalStream = async () => {
   //   "auto"
   // );
 
-  let player = `<div style="height: 230px;width: 230px;" class="video-container"  id="user-container-${UID}">
-                        <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${UID}"></div>
-                  </div><div class='mt-1 d-flex justify-content-center gap-1 align-items-center'>
-                <button onload="checkCookies()" id="mic-btn" @click="toggleMic">
-                 <span class="iconify" data-icon="fa:microphone"></span>
-                </button>
-                <button id="camera-btn" @click="toggleCamera">
-                 <span
-                      class="iconify"
-                      data-icon="carbon:video-filled"
-                    ></span>
-                </button>
-                </div>`;
-  document
-    .getElementById("video-streams")
-    .insertAdjacentHTML("afterend", player);
+  // let player = `<div style="height: 230px;width: 230px;" class="video-container"  id="user-container-${UID}">
+  //                       <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${UID}"></div>
+  //                 </div><div class='mt-1 d-flex justify-content-center gap-1 align-items-center'>
+  //               <button onload="checkCookies()" id="mic-btn" @click="toggleMic">
+  //                <span class="iconify" data-icon="fa:microphone"></span>
+  //               </button>
+  //               <button id="camera-btn" @click="toggleCamera">
+  //                <span
+  //                     class="iconify"
+  //                     data-icon="carbon:video-filled"
+  //                   ></span>
+  //               </button>
+  //               </div>`;
+  // document
+  //   .getElementById("video-streams")
+  //   .insertAdjacentHTML("afterend", player);
 
-  localTracks[1].play(`user-${UID}`);
-  await client.publish([localTracks[0], localTracks[1]]);
+  // localTracks[1].play(`user-${UID}`);
+  // localVideo.play(document.body);
+  await client.publish(localAudio.value, localVideo.value);
+  // await client.publish([localTracks.value[0], localTracks.value[1]]);
 };
 
 const joinStream = async () => {
@@ -96,36 +132,40 @@ const joinStream = async () => {
 };
 
 const handleUserJoined = async (user, mediaType) => {
-  remoteUsers[user.uid] = user;
+  // console.log({ mediaType });
+  // remoteStreams.value[user.uid] = user;
+
+  // console.log(remotes);
+  // media.value = mediaType;
   await client.subscribe(user, mediaType);
 
+  remoteStreams.value.push(user);
+
   if (mediaType === "video") {
-    let player_ = document.getElementById(`user-container-${user.uid}`);
-    console.log(player_);
-    if (player_ != null) {
-      player_.remove();
-    }
-
-    player_ = `<div style="height: 100px;width: 100px;" class="video-container" id="user-container-${user.uid}">
-                        <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${user.uid}"></div>
-              <div class='mt-1 d-flex justify-content-center gap-1 align-items-center'>
-                <button id="mic-btn">
-                 <span class="iconify" data-icon="fa:microphone"></span>
-                </button>
-                <button id="camera-btn">
-                 <span
-                      class="iconify"
-                      data-icon="carbon:video-filled"
-                    ></span>
-                </button>
-                </div>
-                 </div> `;
-    document
-      .getElementById("remote__users")
-      .insertAdjacentHTML("beforeend", player_);
+    // let player_ = document.getElementById(`user-container-${user.uid}`);
+    // console.log(player_);
+    // if (player_ != null) {
+    //   player_.remove();
+    // }
+    // player_ = `<div style="height: 100px;width: 100px;" class="video-container" id="user-container-${user.uid}">
+    //                     <div style="height: 100% !important; width: 100% !important;border-radius:4px !important;" class="video-player" id="user-${user.uid}"></div>
+    //           <div class='mt-1 d-flex justify-content-center gap-1 align-items-center'>
+    //             <button id="mic-btn">
+    //              <span class="iconify" data-icon="fa:microphone"></span>
+    //             </button>
+    //             <button id="camera-btn">
+    //              <span
+    //                   class="iconify"
+    //                   data-icon="carbon:video-filled"
+    //                 ></span>
+    //             </button>
+    //             </div>
+    //              </div> `;
+    // document
+    //   .getElementById("remote__users")
+    //   .insertAdjacentHTML("beforeend", player_);
     // .insertAdjacentHTML("beforeend", player_);
-
-    user.videoTrack.play(`user-${user.uid}`);
+    // user.videoTrack.play(`user-${user.uid}`);
   }
 
   if (mediaType === "audio") {
@@ -134,7 +174,7 @@ const handleUserJoined = async (user, mediaType) => {
 };
 
 const handleUserLeft = async (user) => {
-  delete remoteUsers[user.uid];
+  delete remoteStreams.value[user.uid];
   document.getElementById(`user-container-${user.uid}`).remove();
 };
 
@@ -176,6 +216,12 @@ const handleUserLeft = async (user) => {
 </script>
 
 <style>
+.agora-video {
+  width: 320px;
+  height: 240px;
+  background: black;
+}
+
 .videocall__box {
   background-color: #ffffff;
   border-radius: 4px;
