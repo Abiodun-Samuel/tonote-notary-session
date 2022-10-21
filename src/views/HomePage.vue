@@ -55,7 +55,12 @@
 
           <video class="shadow video" id="video" playsinline autoplay></video>
           <div
-            class="icon__container d-flex justify-content-between align-items-end"
+            class="
+              icon__container
+              d-flex
+              justify-content-between
+              align-items-end
+            "
           >
             <canvas
               class="shadow-sm hidden__two"
@@ -114,7 +119,7 @@
           </div>
         </div>
         <div v-else>
-          <!-- <div class="my-3"> -->
+         
           <h4 class="element hidden"></h4>
           <div class="display-container">
             <h4 class="fw-bold mb-3 ps-5">

@@ -64,13 +64,13 @@ AgoraRTC.setLogLevel(4);
 const store = useStore();
 const APP_ID = "37920f89764044aeac67ed12e096afde";
 const TOKEN =
-  "00637920f89764044aeac67ed12e096afdeIACq+gTNQsVWUA57FPKZIaVfRcMbxlqING6vapG65Osi6/Vg3hQAAAAAEACLq5A0Wrf4YgEAAQBZt/hi";
-const CHANNEL = "demoroom";
+  "00637920f89764044aeac67ed12e096afdeIAACYzw7Ifv7v76VUe0tyFlWZGQWYb1yJ6weJBxOEaTBfUVE42vFt95fIgBDyhRpCBJAYwQAAQDI2T9jAgDI2T9jAwDI2T9jBADI2T9j";
+const CHANNEL = "new";
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 // let localTracks = ref([]);
 let remoteStreams = ref([]);
 // let remotes = [];
-let UID = ref(null);
+let UID = ref("samuel");
 let localAudio = ref(null);
 let localVideo = ref(null);
 // let media = ref("");
@@ -88,7 +88,7 @@ const joinAndDisplayLocalStream = async () => {
   client.on("user-left", handleUserLeft);
   // options.appId, options.channel, token, uid
   // await client.join(APP_ID, CHANNEL, TOKEN, null);
-  UID.value = await client.join(APP_ID, CHANNEL, TOKEN, null);
+  UID.value = await client.join(APP_ID, CHANNEL, TOKEN, "samuel");
 
   // localTracks.value = await AgoraRTC.createMicrophoneAndCameraTracks();
   localAudio.value = await AgoraRTC.createMicrophoneAudioTrack();
